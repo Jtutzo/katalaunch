@@ -8,10 +8,13 @@ jobs:
     steps:
       - checkout
       - node/with-cache:
-          working_directory: src/frontend
           steps:
-            - run: npm install
-            - run: npm test
+            - run:
+                command: npm install
+                working_directory: src/frontend
+            - run:
+                command: npm test
+                working_directory: src/frontend
 workflows:
     "build and test":
       jobs:
