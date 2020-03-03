@@ -1,0 +1,14 @@
+apiVersion: skaffold/v2alpha4
+kind: Config
+metadata:
+  name: katalaunch
+build:
+  artifacts:
+  - image: jtutzo/katalaunch/frontend
+    context: src/frontend
+  tagPolicy:
+    gitCommit: {}
+deploy:
+  kubectl:
+    manifests:
+    - kubernetes-manifests/*.yaml
