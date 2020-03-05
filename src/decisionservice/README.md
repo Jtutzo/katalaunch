@@ -6,6 +6,6 @@
 
 Build  app and docker image
 
-### `docker run --rm -p 80:80 [IMAGE]`
+### `docker run --rm -p 3000:3000 [IMAGE]`
 
 Launch container

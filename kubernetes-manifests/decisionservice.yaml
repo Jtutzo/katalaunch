@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: decisionservice
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: decisionservice
+  template:
+    metadata:
+      labels:
+        app: decisionservice
+    spec:
+      containers:
+        - name: decisionservice
+          image: jtutzo/katalaunch/decisionservice
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 125m
+            requests:
+              cpu: 70m
+              memory: 200Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: decisionservice
+spec:
+  type: ClusterIP
+  selector:
+    app: decisionservice
+  ports:
+    - name: decisionservice
+      port: 3000
+      targetPort: 3000

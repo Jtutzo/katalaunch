@@ -7,7 +7,7 @@ describe('Test app', () => {
     test('Should return 200 and response', () => request(app)
         .get('/last-decision')
         .expect(200)
-      //TODO error comparison date
+      //TODO fix comparison date
       //  .expect(lastDecision)
     )
   })

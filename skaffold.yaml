@@ -6,6 +6,8 @@ build:
   artifacts:
   - image: jtutzo/katalaunch/frontend
     context: src/frontend
+  - image: jtutzo/katalaunch/decisionservice
+    context: src/decisionservie
   tagPolicy:
     gitCommit: {}
 deploy:
