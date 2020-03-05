@@ -7,7 +7,7 @@ build:
   - image: jtutzo/katalaunch/frontend
     context: src/frontend
   - image: jtutzo/katalaunch/decisionservice
-    context: src/decisionservie
+    context: src/decisionservice
   tagPolicy:
     gitCommit: {}
 deploy:
