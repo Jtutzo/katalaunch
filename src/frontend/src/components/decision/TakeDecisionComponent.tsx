@@ -13,17 +13,25 @@ import decisionResource from '../../resources/decision.resources'
 
 const idName = 'decision-component'
 
-class TakeDecisionComponent extends React.Component {
+interface IState {
+  lastDecision?: Decision;
+  decisionMakers: DecisionMaker[];
+}
 
-  private lastDecision?: Decision
-  private decisionMakers: DecisionMaker[] = []
+class TakeDecisionComponent extends React.Component<{}, IState> {
 
   constructor(props: {}) {
     super(props)
-    decisionResource.getLastDecision()
-      .then(lastDecision => this.lastDecision = lastDecision)
-    decisionResource.getDecisionMakers()
-      .then(decisionMakers => this.decisionMakers = decisionMakers)
+    this.state = {
+      decisionMakers: []
+    }
+    this.init().then()
+  }
+
+  private async init() {
+    const [lastDecision, decisionMakers] = await Promise
+      .all([decisionResource.getLastDecision(), decisionResource.getDecisionMakers()])
+    this.setState({lastDecision, decisionMakers})
   }
 
   render() {
@@ -31,13 +39,13 @@ class TakeDecisionComponent extends React.Component {
       <section id={idName} className="container">
         <DisplayDecisionSuccessComponent/>
         <DisplayDecisionErrorComponent/>
-        {this.lastDecision && <LastDecisionComponent decision={this.lastDecision}/>}
-        {this.decisionMakers.length > 0 &&
+        {this.state.lastDecision && <LastDecisionComponent decision={this.state.lastDecision}/>}
+        {this.state.decisionMakers.length > 0 &&
         <Card>
           <Card.Body>
             <Card.Title>Take your decision</Card.Title>
             <Card.Body>
-              <ChooseDecisionMakerComponent decisionMakers={this.decisionMakers}/>
+              <ChooseDecisionMakerComponent decisionMakers={this.state.decisionMakers}/>
               <ChooseDecisionAuthorityComponent/>
               <ChooseDecisionValueComponent/>
               <SubmitDecisionComponent/>

@@ -1,6 +1,5 @@
 import axios from 'axios'
 import {Decision} from '../models/Decision'
-import DecisionMaker from '../models/DecisionMaker'
 
 export class DecisionResource {
 
@@ -10,14 +9,26 @@ export class DecisionResource {
     this.domain = domain
   }
 
-  public getLastDecision(): Promise<Decision> {
-    return axios.get(`${this.domain}/last-decision`)
+  public async getLastDecision(): Promise<Decision> {
+    try {
+      const response = await axios.get(`${this.domain}/last-decision`)
+      return response.data
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
   }
 
-  public getDecisionMakers(): Promise<DecisionMaker[]> {
-    return axios.get(`${this.domain}/decision-makers`)
+  public async getDecisionMakers() {
+    try {
+      const response = await axios.get(`${this.domain}/decision-makers`)
+      return response.data
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
   }
 }
 
-const decisionResource = new DecisionResource('http://decisionservice:3000')
+const decisionResource = new DecisionResource('/decision')
 export default decisionResource

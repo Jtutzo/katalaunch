@@ -5,7 +5,7 @@ import {decisionMakers} from './controller'
 describe('Test app', () => {
   describe('call last decision route', () => {
     test('Should return 200 and response', () => request(app)
-        .get('/last-decision')
+        .get('/decision/last-decision')
         .expect(200)
       //TODO fix comparison date
       //  .expect(lastDecision)
@@ -13,7 +13,7 @@ describe('Test app', () => {
   })
   describe('call decision makers route', () => {
     test('Should return 200 and response', () => request(app)
-      .get('/decision-makers')
+      .get('/decision/decision-makers')
       .expect(200)
       .expect(decisionMakers))
   })
