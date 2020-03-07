@@ -1,6 +1,6 @@
 import React from 'react'
 import LastDecisionComponent from './LastDecisionComponent'
-import { Decision } from '../../models/Decision'
+import {Decision} from '../../models/Decision'
 import ChooseDecisionMakerComponent from './ChooseDecisionMakerComponent'
 import DecisionMaker from '../../models/DecisionMaker'
 import ChooseDecisionAuthorityComponent from './ChooseDecisionAuthorityComponent'
@@ -9,55 +9,49 @@ import SubmitDecisionComponent from './SubmitDecisionComponent'
 import Card from 'react-bootstrap/Card'
 import DisplayDecisionErrorComponent from './DisplayDecisionErrorComponent'
 import DisplayDecisionSuccessComponent from './DisplayDecisionSuccessComponent'
+import decisionResource from '../../resources/decision.resources'
 
-const idName = "decision-component"
+const idName = 'decision-component'
 
-class TakeDecisionComponent extends React.Component {
+interface IState {
+  lastDecision?: Decision;
+  decisionMakers: DecisionMaker[];
+}
 
-  private lastDecision: Decision
-  private decisionMakers: DecisionMaker[]
+class TakeDecisionComponent extends React.Component<{}, IState> {
 
   constructor(props: {}) {
     super(props)
-    this.lastDecision = this.getLastDecision()
-    this.decisionMakers = this.getDecisionMakers()
+    this.state = {
+      decisionMakers: []
+    }
+    this.init().then()
   }
 
-  getLastDecision = (): Decision => ({
-    decisionMakerName: 'Jérémy',
-    authority: "RECOMMANDATION",
-    value: "ACCEPTED",
-    date: new Date()
-  })
-
-  getDecisionMakers = (): DecisionMaker[] => ([{
-    name: 'Antoine',
-    hasSigningAuthority: true,
-    hasCreditAuthority: true
-  }, {
-    name: 'Marcel',
-    hasSigningAuthority: true,
-    hasCreditAuthority: false
-  }])
+  private async init() {
+    const [lastDecision, decisionMakers] = await Promise
+      .all([decisionResource.getLastDecision(), decisionResource.getDecisionMakers()])
+    this.setState({lastDecision, decisionMakers})
+  }
 
   render() {
     return (
       <section id={idName} className="container">
         <DisplayDecisionSuccessComponent/>
         <DisplayDecisionErrorComponent/>
-        <LastDecisionComponent decision={this.lastDecision} />
-        {this.decisionMakers.length > 0 &&
-          <Card>
+        {this.state.lastDecision && <LastDecisionComponent decision={this.state.lastDecision}/>}
+        {this.state.decisionMakers.length > 0 &&
+        <Card>
+          <Card.Body>
+            <Card.Title>Take your decision</Card.Title>
             <Card.Body>
-              <Card.Title>Take your decision</Card.Title>
-              <Card.Body>
-                <ChooseDecisionMakerComponent decisionMakers={this.decisionMakers} />
-                <ChooseDecisionAuthorityComponent />
-                <ChooseDecisionValueComponent />
-                <SubmitDecisionComponent />
-              </Card.Body>
+              <ChooseDecisionMakerComponent decisionMakers={this.state.decisionMakers}/>
+              <ChooseDecisionAuthorityComponent/>
+              <ChooseDecisionValueComponent/>
+              <SubmitDecisionComponent/>
             </Card.Body>
-          </Card>}
+          </Card.Body>
+        </Card>}
       </section>
     )
   }
