@@ -20,3 +20,12 @@ export const chooseDecisionValue = (decisionValue: DecisionValue): DecisionActio
 export const pushDecision = (): DecisionActionType => ({
   type: 'PUSH_DECISION'
 })
+
+export const pushDecisionSuccessResponse = (): DecisionActionType => ({
+  type: 'PUSH_DECISION_SUCCESS_RESPONSE'
+})
+
+export const pushDecisionErrorResponse = (error: any): DecisionActionType => ({
+  type: 'PUSH_DECISION_ERROR_RESPONSE',
+  payload: error
+})

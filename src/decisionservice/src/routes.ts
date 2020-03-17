@@ -6,5 +6,6 @@ export class Routes {
   public routes(app): void {
     app.route("/decision/last-decision").get(this.nodesController.getLastDecision);
     app.route("/decision/decision-makers").get(this.nodesController.getDecisionMakers);
+    app.route("/decision/").post(this.nodesController.postDecision)
   }
 }

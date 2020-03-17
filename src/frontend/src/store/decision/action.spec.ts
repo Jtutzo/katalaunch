@@ -1,4 +1,10 @@
-import {chooseDecisionMaker, chooseDecisionAuthority, chooseDecisionValue, pushDecision} from './action'
+import {
+  chooseDecisionMaker,
+  chooseDecisionAuthority,
+  chooseDecisionValue,
+  pushDecision,
+  pushDecisionSuccessResponse, pushDecisionErrorResponse
+} from './action'
 import { DecisionValue, DecisionAuthority } from '../../models/Decision'
 
 describe("decision action", () => {
@@ -59,6 +65,28 @@ describe("decision action", () => {
         pushDecision()
       ).toEqual({
         type: 'PUSH_DECISION'
+      })
+    })
+  })
+
+  describe("Push decision success response", () => {
+    test("Should create PUSH_DECISION_SUCCESS_RESPONSE action", () => {
+      expect(
+        pushDecisionSuccessResponse()
+      ).toEqual({
+        type: 'PUSH_DECISION_SUCCESS_RESPONSE'
+      })
+    })
+  })
+
+  describe("Push decision error response", () => {
+    test("Should create PUSH_DECISION_ERROR_RESPONSE action", () => {
+      const error = "An error"
+      expect(
+        pushDecisionErrorResponse(error)
+      ).toEqual({
+        type: 'PUSH_DECISION_ERROR_RESPONSE',
+        payload: error
       })
     })
   })

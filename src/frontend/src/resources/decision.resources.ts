@@ -5,8 +5,8 @@ export class DecisionResource {
 
   readonly domain: string
 
-  constructor(domain: string) {
-    this.domain = domain
+  constructor(domain: string = "") {
+    this.domain = `${domain}/decision`
   }
 
   public async getLastDecision(): Promise<Decision> {
@@ -28,7 +28,13 @@ export class DecisionResource {
       throw e
     }
   }
+
+  public async postDecision(decision: Decision) {
+    const response = await axios.post(`${this.domain}`, decision)
+    return response.data
+  }
+
 }
 
-const decisionResource = new DecisionResource('/decision')
+const decisionResource = new DecisionResource()
 export default decisionResource
