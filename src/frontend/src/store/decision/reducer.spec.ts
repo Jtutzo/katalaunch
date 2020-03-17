@@ -1,14 +1,21 @@
-import decisionReducer from './reducer'
+import decisionReducer, {initialState} from './reducer'
 import {DecisionActionType, DecisionState} from './types'
 import {DecisionAuthority, DecisionValue} from '../../models/Decision'
 
-describe('decision reducer', () => {
-  const initialState: DecisionState = {
-    decisionAuthority: 'RECOMMANDATION',
-    decisionValue: 'ACCEPTED',
-    success: false
-  }
+const decisionMaker = {
+  name: 'name',
+  hasSigningAuthority: true,
+  hasCreditAuthority: false
+}
 
+const currentState: DecisionState = {
+  ...initialState,
+  decisionMaker,
+  decisionAuthority: 'RECOMMANDATION',
+  decisionValue: 'ACCEPTED'
+}
+
+describe('decision reducer', () => {
   test('should handle initial state', () => {
     expect(
       decisionReducer(undefined, {} as DecisionActionType)
@@ -20,11 +27,6 @@ describe('decision reducer', () => {
   })
 
   test('should handle CHOOSE_DECISION_MAKER', () => {
-    const decisionMaker = {
-      name: 'name',
-      hasSigningAuthority: true,
-      hasCreditAuthority: false
-    }
     expect(
       decisionReducer(initialState, {
         type: 'CHOOSE_DECISION_MAKER',
@@ -98,11 +100,6 @@ describe('decision reducer', () => {
   })
 
   test('should handle PUSH_DECISION', () => {
-    const decisionMaker = {
-      name: 'name',
-      hasSigningAuthority: true,
-      hasCreditAuthority: false
-    }
     expect(
       decisionReducer(initialState, {
         type: 'PUSH_DECISION'
@@ -113,20 +110,39 @@ describe('decision reducer', () => {
     })
 
     expect(
-      decisionReducer({
-        ...initialState,
-        decisionMaker,
-        decisionAuthority: 'RECOMMANDATION',
-        decisionValue: 'ACCEPTED'
-      }, {
+      decisionReducer(currentState, {
         type: 'PUSH_DECISION'
       })
     ).toEqual({
       ...initialState,
       decisionMaker,
       decisionAuthority: 'RECOMMANDATION',
-      decisionValue: 'ACCEPTED',
+      decisionValue: 'ACCEPTED'
+    })
+  })
+
+  test('should handle PUSH_DECISION_SUCCESS_RESPONSE', () => {
+    expect(
+      decisionReducer(currentState, {
+        type: 'PUSH_DECISION_SUCCESS_RESPONSE'
+      })
+    ).toEqual({
+      ...initialState,
       success: true
+    })
+  })
+
+  test('should handle PUSH_DECISION_ERROR_RESPONSE', () => {
+    const errorMessage = 'An error'
+    expect(
+      decisionReducer(currentState, {
+        type: 'PUSH_DECISION_ERROR_RESPONSE',
+        payload: errorMessage
+      })
+    ).toEqual({
+      ...currentState,
+      errorMessage,
+      success: false
     })
   })
 })

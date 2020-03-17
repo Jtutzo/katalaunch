@@ -1,5 +1,5 @@
-import DecisionMaker from "../../models/DecisionMaker";
-import { DecisionAuthority, DecisionValue } from "../../models/Decision";
+import DecisionMaker from '../../models/DecisionMaker'
+import {DecisionAuthority, DecisionValue} from '../../models/Decision'
 
 interface ChooseDecisionMakerAction {
   type: 'CHOOSE_DECISION_MAKER'
@@ -20,6 +20,15 @@ interface PushDecisionAction {
   type: 'PUSH_DECISION'
 }
 
+interface PushDecisionSuccessResponseAction {
+  type: 'PUSH_DECISION_SUCCESS_RESPONSE'
+}
+
+interface PushDecisionErrorResponseAction {
+  type: 'PUSH_DECISION_ERROR_RESPONSE'
+  payload: any
+}
+
 export interface DecisionState {
   errorMessage?: string
   success: boolean,
@@ -28,4 +37,10 @@ export interface DecisionState {
   decisionValue: DecisionValue
 }
 
-export type DecisionActionType = ChooseDecisionMakerAction | ChooseDecisionAuthorityAction | ChooseDecisionValueAction | PushDecisionAction
+export type DecisionActionType =
+  ChooseDecisionMakerAction
+  | ChooseDecisionAuthorityAction
+  | ChooseDecisionValueAction
+  | PushDecisionAction
+  | PushDecisionSuccessResponseAction
+  | PushDecisionErrorResponseAction

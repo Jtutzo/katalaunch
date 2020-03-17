@@ -17,4 +17,15 @@ describe('Test app', () => {
       .expect(200)
       .expect(decisionMakers))
   })
+  describe('Post on decision route', () => {
+    test('Should return 201', () => request(app)
+      .post('/decision')
+      .send({
+        decisionMakerName: 'Jérémy',
+        authority: 'RECOMMANDATION',
+        value: 'ACCEPTED',
+        date: new Date()
+      })
+      .expect(201))
+  })
 })

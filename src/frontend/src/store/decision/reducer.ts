@@ -1,6 +1,6 @@
 import { DecisionState, DecisionActionType } from './types'
 
-const initialState: DecisionState = {
+export const initialState: DecisionState = {
   decisionAuthority: "RECOMMANDATION",
   decisionValue: "ACCEPTED",
   success: false
@@ -32,7 +32,18 @@ const decisionReducer = (state = initialState, action: DecisionActionType): Deci
       return {
         ...state,
         errorMessage: state.decisionMaker ? undefined : "You must choose a decision maker !",
-        success: !!state.decisionMaker
+        success: false
+      }
+    case 'PUSH_DECISION_SUCCESS_RESPONSE':
+      return {
+        ...initialState,
+        success: true
+      }
+    case 'PUSH_DECISION_ERROR_RESPONSE':
+      return {
+        ...state,
+        errorMessage: `${action.payload}`,
+        success: false
       }
     default:
       return state

@@ -1,7 +1,7 @@
 import {Request, Response} from 'express'
 import {Decision, DecisionMaker} from './model'
 
-export const lastDecision: Decision = {
+export let lastDecision: Decision = {
   decisionMakerName: 'Jérémy',
   authority: 'RECOMMANDATION',
   value: 'ACCEPTED',
@@ -26,4 +26,10 @@ export class Controller {
   public getDecisionMakers(req: Request, res: Response) {
     res.json(decisionMakers)
   }
+
+  public postDecision(req: Request, res: Response) {
+    lastDecision = req.body as Decision
+    res.sendStatus(201)
+  }
+
 }
