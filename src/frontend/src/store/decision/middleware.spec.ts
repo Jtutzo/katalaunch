@@ -6,7 +6,7 @@ import {initialState} from './reducer'
 import {now} from '../../services/date.service'
 
 jest.mock('../../services/date.service')
-jest.mock('../../resources/decision.resources')
+jest.mock('../../resources/decision.resource')
 
 const createMiddleware = (state: DecisionState = initialState) => {
   const store: any = {
