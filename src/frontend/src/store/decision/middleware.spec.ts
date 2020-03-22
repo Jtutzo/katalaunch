@@ -1,12 +1,12 @@
-import decisionResource from '../../resources/decision.resources'
+import decisionResource from '../../resources/decision.resource'
 import middleware from './middleware'
 import {DecisionActionType, DecisionState} from './types'
 import {pushDecision, pushDecisionErrorResponse, pushDecisionSuccessResponse} from './action'
 import {initialState} from './reducer'
-import {newDate} from '../../services/date.service'
+import {now} from '../../services/date.service'
 
 jest.mock('../../services/date.service')
-jest.mock('../../resources/decision.resources')
+jest.mock('../../resources/decision.resource')
 
 const createMiddleware = (state: DecisionState = initialState) => {
   const store: any = {
@@ -58,15 +58,15 @@ describe('middleware', () => {
     }
 
     const date = new Date()
-    const newDateMocked = newDate as jest.Mock<Date>
+    const nowMocked = now as jest.Mock<Date>
 
     beforeEach(() => {
       decisionResource.postDecision = jest.fn(() => Promise.resolve())
-      newDateMocked.mockReturnValue(date)
+      nowMocked.mockReturnValue(date)
     })
 
     afterEach(() => {
-      newDateMocked.mockClear()
+      nowMocked.mockClear()
     })
 
     test('Should call redux', () => {
