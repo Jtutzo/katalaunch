@@ -1,12 +1,14 @@
 import axios from 'axios'
 import {Decision} from '../models/Decision'
 
+export const PREFIX_URL = '/decision'
+
 export class DecisionResource {
 
   readonly domain: string
 
-  constructor(domain: string = "") {
-    this.domain = `${domain}/decision`
+  constructor(base: string = "") {
+    this.domain = `${base}${PREFIX_URL}`
   }
 
   public async getLastDecision(): Promise<Decision> {

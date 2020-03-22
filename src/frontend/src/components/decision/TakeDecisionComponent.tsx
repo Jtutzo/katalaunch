@@ -9,7 +9,7 @@ import SubmitDecisionComponent from './SubmitDecisionComponent'
 import Card from 'react-bootstrap/Card'
 import DisplayDecisionErrorComponent from './DisplayDecisionErrorComponent'
 import DisplayDecisionSuccessComponent from './DisplayDecisionSuccessComponent'
-import decisionResource from '../../resources/decision.resources'
+import decisionResource from '../../resources/decision.resource'
 
 const idName = 'decision-component'
 

@@ -1,8 +1,8 @@
 import {DecisionActionType, DecisionState} from './types'
-import decisionResource from '../../resources/decision.resources'
+import decisionResource from '../../resources/decision.resource'
 import {pushDecisionErrorResponse, pushDecisionSuccessResponse} from './action'
 import {Store} from 'redux'
-import {newDate} from '../../services/date.service'
+import {now} from '../../services/date.service'
 
 export type Next = (action: DecisionActionType) => void
 export type DecisionStore = Store<DecisionState, DecisionActionType>
@@ -27,7 +27,7 @@ const pushDecision = ({getState, dispatch}: DecisionStore) => {
     decisionMakerName: decisionMaker!!.name,
     value: decisionValue,
     authority: decisionAuthority,
-    date: newDate()
+    date: now()
   }).then(() => dispatch(pushDecisionSuccessResponse()))
     .catch(error => dispatch(pushDecisionErrorResponse(error)))
 }
