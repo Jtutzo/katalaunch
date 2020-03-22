@@ -1,25 +1,35 @@
-import {DecisionActionType} from './types'
+import {DecisionActionType, DecisionState} from './types'
 import decisionResource from '../../resources/decision.resources'
 import {pushDecisionErrorResponse, pushDecisionSuccessResponse} from './action'
+import {Store} from 'redux'
+import {newDate} from '../../services/date.service'
 
-const middleware = (store: any) => (next: (action: DecisionActionType) => void) => (action: DecisionActionType) => {
+export type Next = (action: DecisionActionType) => void
+export type DecisionStore = Store<DecisionState, DecisionActionType>
+
+const middleware = (store: DecisionStore) => (next: Next) => (action: DecisionActionType) => {
   switch (action.type) {
     case 'PUSH_DECISION':
       next(action)
-      const {errorMessage, decisionMaker, decisionAuthority, decisionValue} = store.getState()
+      const {errorMessage} = store.getState()
       if (!errorMessage) {
-        decisionResource.postDecision({
-          decisionMakerName: decisionMaker.name,
-          value: decisionValue,
-          authority: decisionAuthority,
-          date: new Date()
-        }).then(() => store.dispatch(pushDecisionSuccessResponse()))
-          .catch(error => store.dispatch(pushDecisionErrorResponse(error)))
+        pushDecision(store)
       }
       break
     default:
       next(action)
   }
+}
+
+const pushDecision = ({getState, dispatch}: DecisionStore) => {
+  const {decisionMaker, decisionValue, decisionAuthority} = getState()
+  decisionResource.postDecision({
+    decisionMakerName: decisionMaker!!.name,
+    value: decisionValue,
+    authority: decisionAuthority,
+    date: newDate()
+  }).then(() => dispatch(pushDecisionSuccessResponse()))
+    .catch(error => dispatch(pushDecisionErrorResponse(error)))
 }
 
 export default middleware
